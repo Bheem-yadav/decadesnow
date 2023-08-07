@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use View;
+use App\Models\Navbar;
+use DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +26,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::composer('*', function($view)
+        {
+            $navbars = DB::table('pages')->get();
+            $view->with('menu_data', $navbars);
+
+            
+
+        });
+    } 
     }
-}
+
