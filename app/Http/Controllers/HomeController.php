@@ -248,7 +248,24 @@ function listing(Request $request) {
   // dd($daymonthyear);
   $search=$alldays.'-'.$allmonths.'-'.$allyears.' '.$allspecials;
   // dd($search);
-  if(!empty($alldays)  && !empty($allmonths) &&  !empty($allspecials)){
+
+  if(!empty($alldays)  && !empty($allmonths) ){
+    $list_data=DB::table('posts')->where('DOB','like' ,"$commondate%")->where('profession','like', 'Actor')
+    ->orwhere('DOB','like' ,"$commondate%")->where('profession','like', 'Actress')
+    ->orwhere('DOB','like' ,"$commondate%")->where('profession','like', 'Athletes')
+    ->orwhere('DOB','like' ,"$commondate%")->where('profession','like', 'Politician')
+    ->orwhere('anniversary','like' ,"$commondate%")->skip(0)->take(20)->get();
+  }
+
+  if(!empty($alldays)  && !empty($allmonths) && !empty($allyears)){
+    $list_data=DB::table('posts')->where('DOB','like' ,"$daymonthyear%")->where('profession','like', 'Actor')
+    ->orwhere('DOB','like' ,"$daymonthyear%")->where('profession','like', 'Actress')
+    ->orwhere('DOB','like' ,"$daymonthyear%")->where('profession','like', 'Athletes')
+    ->orwhere('DOB','like' ,"$daymonthyear%")->where('profession','like', 'Politician')
+    ->orwhere('anniversary','like' ,"$daymonthyear%")->skip(0)->take(20)->get();
+  }
+
+  if(!empty($alldays)  && !empty($allmonths) && !empty($allspecials)){
     if($allspecials=="Birthday"){
       // dd($allspecials);
      $list_data=DB::table('posts')->where('DOB','like' ,"$commondate%")->get();
@@ -268,11 +285,14 @@ function listing(Request $request) {
     }
    
   }
+  
 
 else{
     $list_data=DB::table('posts')->where('profession','like', 'Actor')
     ->orwhere('profession','like', 'Actress')->orwhere('profession','like', 'Athletes')
     ->orwhere('profession','like', 'Politician')->skip(0)->take(50)->get();
+
+  
 
     if(!empty($alldays)){
       $list_data=DB::table('posts')->where('DOB','like' ,"$alldays%")->where('profession','like', 'Actor')
